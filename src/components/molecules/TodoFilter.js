@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import StatusEnum from 'constants/statusEnum';
 import SearchBar from 'material-ui-search-bar';
+import _ from 'underscore';
 
 const styles = {
   todoFilter__button: {
@@ -22,6 +23,11 @@ const styles = {
 };
 
 class TodoFilter extends Component {
+  constructor() {
+    super();
+    this.debouncedSearch = _.debounce(this.debouncedSearch, 250);
+  }
+
   state = {
     selected: 'All',
     query: '',
@@ -34,6 +40,18 @@ class TodoFilter extends Component {
       await this.props.populateTodos();
     }
     this.setState({ selected: 'All', query });
+  };
+
+  debouncedSearch = query => {
+    this.search(query);
+  };
+
+  // we don't need to debounce on pressing "enter"
+  // keyup isn't ideal but it works
+  handleSearchKeyUp = e => {
+    if (e.charCode === 13) {
+      this.search(e.target.value);
+    }
   };
 
   selectFilter = async status => {
@@ -73,7 +91,8 @@ class TodoFilter extends Component {
         </div>
         <div style={styles.todoFilter__search}>
           <SearchBar
-            onChange={this.search}
+            onChange={this.debouncedSearch}
+            onKeyUp={this.handleSearchKeyUp}
             onRequestSearch={() => {}}
             style={styles.todoFilter__search__input}
           />

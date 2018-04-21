@@ -31,6 +31,10 @@ class Util {
     }
     return dateString;
   };
+
+  static isLetter = str => {
+    return str.length === 1 && str.match(/[a-zA-Z]/i);
+  };
 }
 
 export default Util;
