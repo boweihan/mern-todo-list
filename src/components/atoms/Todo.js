@@ -14,6 +14,7 @@ const Todo = ({ data, deleteTodo, openEditDialog }) => (
     }}
     children={
       <div
+        key={data._id}
         style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}
       >
         <div style={{ flex: 1, flexDirection: 'column', paddingRight: 20 }}>

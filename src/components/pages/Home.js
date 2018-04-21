@@ -21,7 +21,8 @@ const styles = {
   },
   home__container__filter: {
     height: 48,
-    padding: '0 15%',
+    display: 'block',
+    padding: '0 15vw',
   },
   home__container__upper: {
     height: 200,
@@ -40,11 +41,6 @@ class Home extends Component {
     todos: [],
     editing: false,
     editableTodo: null,
-  };
-
-  getTodosByStatus = async status => {
-    let todos = await api.getTodosByStatus(status);
-    this.setState({ todos });
   };
 
   populateTodos = async () => {
@@ -92,6 +88,21 @@ class Home extends Component {
     }
   };
 
+  getTodosByStatus = async status => {
+    let todos = await api.getTodosByStatus(status);
+    this.setState({ todos });
+  };
+
+  getTodosByTitle = async title => {
+    let todos = await api.getTodosByTitle(title);
+    this.setState({ todos });
+  };
+
+  getTodosByStatusAndTitle = async (status, title) => {
+    let todos = await api.getTodosByStatusAndTitle(status, title);
+    this.setState({ todos });
+  };
+
   openEditDialog = todo => {
     this.setState({ editing: true, editableTodo: todo });
   };
@@ -114,9 +125,14 @@ class Home extends Component {
           <TodoCreateForm createTodo={this.createTodo} />
         </div>
 
-        {/* FILTER VIEW */}
+        {/* FILTER AND SEARCH VIEW */}
         <div style={styles.home__container__filter}>
-          <TodoFilter getTodosByStatus={this.getTodosByStatus} />
+          <TodoFilter
+            getTodosByStatus={this.getTodosByStatus}
+            populateTodos={this.populateTodos}
+            getTodosByTitle={this.getTodosByTitle}
+            getTodosByStatusAndTitle={this.getTodosByStatusAndTitle}
+          />
         </div>
 
         {/* LIST VIEW */}

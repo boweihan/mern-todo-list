@@ -83,14 +83,23 @@ router
 router.route('/todos/filter').get((req, res) => {
   // handle status filter
   let statusFilter = req.query.status;
-  if (statusFilter && statusFilter !== 'All') {
-    Todo.find({ status: statusFilter }, (err, comments) => {
-      if (err) res.send(err);
-      res.json(comments);
-    });
-  } else {
-    Todo.find((err, comments) => {
-      if (err) res.send(err);
+  let titleFilter = req.query.title;
+  console.log(statusFilter);
+  console.log(titleFilter);
+  let query = {};
+  if (statusFilter) {
+    query.status = statusFilter;
+  }
+  if (titleFilter) {
+    query.title = { $regex: titleFilter, $options: 'i' };
+  }
+
+  if (Object.keys(query).length > 0) {
+    Todo.find(query, (err, comments) => {
+      if (err) {
+        console.log(err);
+        res.send(err);
+      }
       res.json(comments);
     });
   }

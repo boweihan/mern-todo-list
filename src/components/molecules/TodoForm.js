@@ -9,7 +9,6 @@ import StatusEnum from 'constants/statusEnum';
 import Util from 'services/util';
 
 const styles = {
-  todoForm__form: {},
   todoForm__input__small: {
     width: 'calc(50% - 30px)',
     margin: 5,

@@ -33,6 +33,22 @@ class API {
         return res.data;
       });
   };
+
+  static getTodosByTitle = title => {
+    return axios
+      .get(constants.serverUrl + '/filter?title=' + title)
+      .then(res => {
+        return res.data;
+      });
+  };
+
+  static getTodosByStatusAndTitle = (status, title) => {
+    return axios
+      .get(constants.serverUrl + '/filter?title=' + title + '&status=' + status)
+      .then(res => {
+        return res.data;
+      });
+  };
 }
 
 export default API;
