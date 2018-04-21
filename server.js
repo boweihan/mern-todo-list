@@ -80,6 +80,22 @@ router
     });
   });
 
+router.route('/todos/filter').get((req, res) => {
+  // handle status filter
+  let statusFilter = req.query.status;
+  if (statusFilter && statusFilter !== 'All') {
+    Todo.find({ status: statusFilter }, (err, comments) => {
+      if (err) res.send(err);
+      res.json(comments);
+    });
+  } else {
+    Todo.find((err, comments) => {
+      if (err) res.send(err);
+      res.json(comments);
+    });
+  }
+});
+
 // use router configuration to handle all /api routes
 app.use('/api', router);
 

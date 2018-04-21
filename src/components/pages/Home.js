@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import constants from 'constants/constants';
 import api from 'services/api';
 import _ from 'underscore';
 
 import TodoList from 'components/molecules/TodoList';
 import TodoCreateForm from 'components/organisms/TodoCreateForm';
 import TodoEditForm from 'components/organisms/TodoEditForm';
+import TodoFilter from 'components/molecules/TodoFilter';
 import Dialog from 'material-ui/Dialog';
 
 const styles = {
@@ -14,8 +14,13 @@ const styles = {
     padding: '25px 0',
   },
   home__container__lower: {
-    height: 'calc(100vh - 250px)',
+    height: 'calc(100vh - 308px)',
     overflow: 'scroll',
+    margin: '0 15%',
+    border: '5px solid white',
+  },
+  home__container__filter: {
+    height: 48,
     padding: '0 15%',
   },
   home__container__upper: {
@@ -25,6 +30,7 @@ const styles = {
   home__container__lower__padding: {
     backgroundColor: 'white',
     padding: 20,
+    minHeight: 'calc(100% - 40px)',
   },
 };
 
@@ -34,6 +40,11 @@ class Home extends Component {
     todos: [],
     editing: false,
     editableTodo: null,
+  };
+
+  getTodosByStatus = async status => {
+    let todos = await api.getTodosByStatus(status);
+    this.setState({ todos });
   };
 
   populateTodos = async () => {
@@ -91,16 +102,24 @@ class Home extends Component {
 
   componentDidMount() {
     this.populateTodos();
-    // polling!! poor man's websockets :)
-    setInterval(this.populateTodos, constants.pollInterval);
+    // polling!! poor man's websockets :) - don't actually use this it sucks
+    // setInterval(this.populateTodos, constants.pollInterval);
   }
 
   render() {
     return (
       <div style={styles.home__container}>
+        {/* CREATE FORM VIEW */}
         <div style={styles.home__container__upper}>
           <TodoCreateForm createTodo={this.createTodo} />
         </div>
+
+        {/* FILTER VIEW */}
+        <div style={styles.home__container__filter}>
+          <TodoFilter getTodosByStatus={this.getTodosByStatus} />
+        </div>
+
+        {/* LIST VIEW */}
         <div style={styles.home__container__lower}>
           <div style={styles.home__container__lower__padding}>
             <TodoList
@@ -110,6 +129,8 @@ class Home extends Component {
             />
           </div>
         </div>
+
+        {/* MODAL */}
         <Dialog
           modal={true}
           open={this.state.editing}

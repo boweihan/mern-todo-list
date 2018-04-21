@@ -25,6 +25,14 @@ class API {
       return res.data;
     });
   };
+
+  static getTodosByStatus = status => {
+    return axios
+      .get(constants.serverUrl + '/filter?status=' + status)
+      .then(res => {
+        return res.data;
+      });
+  };
 }
 
 export default API;
