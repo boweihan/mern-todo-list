@@ -1,37 +1,56 @@
 import React, { Component } from 'react';
 import api from 'services/api';
+import Dialog from 'material-ui/Dialog';
+import Util from 'services/util';
 import _ from 'underscore';
 
 import TodoList from 'components/molecules/TodoList';
 import TodoCreateForm from 'components/organisms/TodoCreateForm';
 import TodoEditForm from 'components/organisms/TodoEditForm';
 import TodoFilter from 'components/molecules/TodoFilter';
-import Dialog from 'material-ui/Dialog';
+import TodoSideNav from 'components/molecules/TodoSideNav';
+import TodoCalendar from 'components/organisms/TodoCalendar';
 
 const styles = {
   home__container: {
     backgroundColor: '#f2f2f2',
-    padding: '25px 0',
+    display: 'flex',
+    flexDirection: 'row',
   },
   home__container__lower: {
-    height: 'calc(100vh - 308px)',
+    height: 'calc(100vh - 326px)',
     overflow: 'scroll',
-    margin: '0 15%',
+    margin: '0 10%',
     border: '5px solid white',
   },
+  home__container__left: {
+    backgroundColor: '#333333',
+    width: 100,
+  },
+  home__container__right: {
+    padding: '25px 0',
+    flex: 1,
+  },
   home__container__filter: {
-    height: 48,
-    display: 'block',
-    padding: '0 15vw',
+    maxHeight: 96,
+    height: 96,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    padding: '0 10vw',
   },
   home__container__upper: {
-    height: 200,
-    padding: '0 15%',
+    height: 170,
+    padding: '0 10%',
   },
   home__container__lower__padding: {
     backgroundColor: 'white',
     padding: 20,
     minHeight: 'calc(100% - 40px)',
+  },
+  home__container__calendar: {
+    height: 'calc(80vh - 50px)',
+    margin: '10vh',
   },
 };
 
@@ -41,6 +60,12 @@ class Home extends Component {
     todos: [],
     editing: false,
     editableTodo: null,
+    calendar: false,
+  };
+
+  showCalendar = async calendar => {
+    await this.populateTodos(); // refresh on nav
+    this.setState({ calendar });
   };
 
   populateTodos = async () => {
@@ -54,6 +79,7 @@ class Home extends Component {
       let createdTodo = data.todo;
       let newState = this.state;
       newState.todos.push(createdTodo);
+      newState.todos = Util.sortTodosByDate(newState.todos);
       this.setState(newState);
     }
   };
@@ -84,6 +110,7 @@ class Home extends Component {
         }),
       );
       newState.todos.push(updatedTodo);
+      newState.todos = Util.sortTodosByDate(newState.todos);
       this.setState(newState);
     }
   };
@@ -120,32 +147,46 @@ class Home extends Component {
   render() {
     return (
       <div style={styles.home__container}>
-        {/* CREATE FORM VIEW */}
-        <div style={styles.home__container__upper}>
-          <TodoCreateForm createTodo={this.createTodo} />
-        </div>
-
-        {/* FILTER AND SEARCH VIEW */}
-        <div style={styles.home__container__filter}>
-          <TodoFilter
-            getTodosByStatus={this.getTodosByStatus}
-            populateTodos={this.populateTodos}
-            getTodosByTitle={this.getTodosByTitle}
-            getTodosByStatusAndTitle={this.getTodosByStatusAndTitle}
+        <div style={styles.home__container__left}>
+          <TodoSideNav
+            calendar={this.state.calendar}
+            showCalendar={this.showCalendar}
           />
         </div>
+        <div style={styles.home__container__right}>
+          {this.state.calendar ? (
+            <div style={styles.home__container__calendar}>
+              <TodoCalendar todos={this.state.todos} />
+            </div>
+          ) : (
+            <div>
+              {/* CREATE FORM VIEW */}
+              <div style={styles.home__container__upper}>
+                <TodoCreateForm createTodo={this.createTodo} />
+              </div>
 
-        {/* LIST VIEW */}
-        <div style={styles.home__container__lower}>
-          <div style={styles.home__container__lower__padding}>
-            <TodoList
-              todos={this.state.todos}
-              deleteTodo={this.deleteTodo}
-              openEditDialog={this.openEditDialog}
-            />
-          </div>
+              {/* FILTER AND SEARCH VIEW */}
+              <div style={styles.home__container__filter}>
+                <TodoFilter
+                  getTodosByStatus={this.getTodosByStatus}
+                  populateTodos={this.populateTodos}
+                  getTodosByTitle={this.getTodosByTitle}
+                  getTodosByStatusAndTitle={this.getTodosByStatusAndTitle}
+                />
+              </div>
+              {/* LIST VIEW */}
+              <div style={styles.home__container__lower}>
+                <div style={styles.home__container__lower__padding}>
+                  <TodoList
+                    todos={this.state.todos}
+                    deleteTodo={this.deleteTodo}
+                    openEditDialog={this.openEditDialog}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
         </div>
-
         {/* MODAL */}
         <Dialog
           modal={true}

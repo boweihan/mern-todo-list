@@ -7,9 +7,8 @@ var app = express();
 var router = express.Router();
 var port = process.env.API_PORT || 3001;
 
-mongoose.connect(
-  'mongodb://admin:admin@ds141474.mlab.com:41474/fortniterankingsdb',
-);
+// free tier creds, gonna commit this straight to github
+mongoose.connect('mongodb://admin:admin@ds153869.mlab.com:53869/todolist');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -39,10 +38,12 @@ router.get('/', (req, res) => {
 router
   .route('/todos')
   .get((req, res) => {
-    Todo.find((err, comments) => {
-      if (err) res.send(err);
-      res.json(comments);
-    });
+    Todo.find()
+      .sort('dueDate')
+      .exec((err, comments) => {
+        if (err) res.send(err);
+        res.json(comments);
+      });
   })
   .post((req, res) => {
     var todo = new Todo();
@@ -84,8 +85,7 @@ router.route('/todos/filter').get((req, res) => {
   // handle status filter
   let statusFilter = req.query.status;
   let titleFilter = req.query.title;
-  console.log(statusFilter);
-  console.log(titleFilter);
+
   let query = {};
   if (statusFilter) {
     query.status = statusFilter;
@@ -95,13 +95,15 @@ router.route('/todos/filter').get((req, res) => {
   }
 
   if (Object.keys(query).length > 0) {
-    Todo.find(query, (err, comments) => {
-      if (err) {
-        console.log(err);
-        res.send(err);
-      }
-      res.json(comments);
-    });
+    Todo.find(query)
+      .sort('dueDate')
+      .exec((err, comments) => {
+        if (err) {
+          console.log(err);
+          res.send(err);
+        }
+        res.json(comments);
+      });
   }
 });
 

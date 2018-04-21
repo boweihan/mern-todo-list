@@ -2,12 +2,6 @@
 
 ## Features
 
-\*
-
-## Feature Pipeline
-
-* Localization
-* Validation
-* Keyboard accessibility
-* Font loading issues
-*
+* CRUD on todos
+* Search by title
+* Filter by status (within search results)

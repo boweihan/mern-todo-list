@@ -6,3 +6,17 @@ body {
   font-family: 'Do Hyeon', sans-serif;
   box-sizing: border-box;
 }
+
+/* react-big-calendar overrides */
+
+.rbc-toolbar button {
+  border-radius: 0;
+}
+
+.rbc-event {
+  border-radius: 0;
+  background-color: #ff4d4d;
+}
+
+.rbc-today {
+}

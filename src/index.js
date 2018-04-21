@@ -5,6 +5,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import registerServiceWorker from 'registerServiceWorker';
 
+import 'react-big-calendar/lib/css/react-big-calendar.css';
 import './index.css';
 
 const muiTheme = getMuiTheme({

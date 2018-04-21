@@ -69,7 +69,9 @@ class TodoFilter extends Component {
 
   render() {
     return (
-      <div>
+      <div
+        style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}
+      >
         <div style={styles.todoFilter__filter}>
           <RaisedButton
             onClick={() => this.selectFilter('All')}
@@ -91,6 +93,7 @@ class TodoFilter extends Component {
         </div>
         <div style={styles.todoFilter__search}>
           <SearchBar
+            hintText="Title"
             onChange={this.debouncedSearch}
             onKeyUp={this.handleSearchKeyUp}
             onRequestSearch={() => {}}

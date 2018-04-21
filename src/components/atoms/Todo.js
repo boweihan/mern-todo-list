@@ -17,15 +17,21 @@ const Todo = ({ data, deleteTodo, openEditDialog }) => (
         key={data._id}
         style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}
       >
+        <div
+          style={{
+            position: 'absolute',
+            top: '-10px',
+            left: '-10px',
+            backgroundColor: Util.getDateColor(data.dueDate, data.status),
+            padding: 5,
+            color: 'white',
+          }}
+        >
+          {Util.getReadableDateString(data.dueDate)}
+        </div>
         <div style={{ flex: 1, flexDirection: 'column', paddingRight: 20 }}>
           <div style={{ display: 'flex', flexDirection: 'row' }}>
-            <p>
-              {data.title}
-              &nbsp;-&nbsp;Due: {Util.getReadableDateString(data.dueDate)}{' '}
-              <span style={{ color: '#ff4d4d' }}>
-                {Util.getOverdueDateString(data.dueDate, data.status)}
-              </span>
-            </p>
+            <p>{data.title}</p>
           </div>
           <div style={{ color: 'gray' }}>{data.description}</div>
           <br />
