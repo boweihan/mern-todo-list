@@ -25,6 +25,8 @@ class TodoEditForm extends Component {
           handleSubmit={this.updateTodo}
           submitText="Update Todo"
           backgroundColor="#f2f2f2"
+          showError={this.props.showError}
+          hideError={this.props.hideError}
         />
       </div>
     );

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import ActionList from 'material-ui/svg-icons/action/list';
+import ActionEvent from 'material-ui/svg-icons/action/event';
 
 const styles = {
   todoSideNav__button__list: {
@@ -47,7 +48,7 @@ class TodoSideNav extends Component {
           }}
           onClick={() => this.props.showCalendar(true)}
           overlayStyle={styles.todoSideNav__button__calendar__overlay}
-          icon={<ActionList />}
+          icon={<ActionEvent />}
         />
       </div>
     );

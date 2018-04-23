@@ -33,7 +33,16 @@ const Todo = ({ data, deleteTodo, openEditDialog }) => (
           <div style={{ display: 'flex', flexDirection: 'row' }}>
             <p>{data.title}</p>
           </div>
-          <div style={{ color: 'gray' }}>{data.description}</div>
+          <div
+            style={{
+              maxWidth: 'calc(80vw - 262px)', // need to automate these calculations
+              fontFamily: 'Roboto',
+              fontSize: '0.9em',
+              wordWrap: 'break-word',
+            }}
+          >
+            {data.description}
+          </div>
           <br />
           <div style={{ fontSize: '0.7em' }}>
             Status:{' '}

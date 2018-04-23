@@ -12,6 +12,8 @@ class TodoCreateForm extends Component {
         handleSubmit={this.createTodo}
         submitText="Add Todo"
         backgroundColor="white"
+        showError={this.props.showError}
+        hideError={this.props.hideError}
       />
     );
   }

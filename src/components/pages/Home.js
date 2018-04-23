@@ -10,6 +10,7 @@ import TodoEditForm from 'components/organisms/TodoEditForm';
 import TodoFilter from 'components/molecules/TodoFilter';
 import TodoSideNav from 'components/molecules/TodoSideNav';
 import TodoCalendar from 'components/organisms/TodoCalendar';
+import TodoErrorBar from 'components/atoms/TodoErrorBar';
 
 const styles = {
   home__container: {
@@ -56,12 +57,17 @@ const styles = {
 
 // this guy is basically a controller
 class Home extends Component {
-  state = {
-    todos: [],
-    editing: false,
-    editableTodo: null,
-    calendar: false,
-  };
+  constructor() {
+    super();
+    this.debouncedHideError = _.debounce(this.hideError, 5000);
+    this.state = {
+      todos: [],
+      editing: false,
+      editableTodo: null,
+      calendar: false,
+      error: null,
+    };
+  }
 
   showCalendar = async calendar => {
     await this.populateTodos(); // refresh on nav
@@ -144,6 +150,15 @@ class Home extends Component {
     // setInterval(this.populateTodos, constants.pollInterval);
   }
 
+  showError = message => {
+    this.setState({ error: { message } });
+    this.debouncedHideError();
+  };
+
+  hideError = () => {
+    this.setState({ error: null });
+  };
+
   render() {
     return (
       <div style={styles.home__container}>
@@ -162,7 +177,11 @@ class Home extends Component {
             <div>
               {/* CREATE FORM VIEW */}
               <div style={styles.home__container__upper}>
-                <TodoCreateForm createTodo={this.createTodo} />
+                <TodoCreateForm
+                  createTodo={this.createTodo}
+                  showError={this.showError}
+                  hideError={this.hideError}
+                />
               </div>
 
               {/* FILTER AND SEARCH VIEW */}
@@ -194,11 +213,19 @@ class Home extends Component {
           onRequestClose={this.closeEditDialog}
         >
           <TodoEditForm
+            showError={this.showError}
+            hideError={this.hideError}
             closeEditDialog={this.closeEditDialog}
             updateTodo={this.updateTodo}
             todo={this.state.editableTodo}
           />
         </Dialog>
+        {this.state.error ? (
+          <TodoErrorBar
+            msg={this.state.error.message}
+            hideError={this.hideError}
+          />
+        ) : null}
       </div>
     );
   }

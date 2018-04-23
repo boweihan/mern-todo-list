@@ -102,10 +102,20 @@ class TodoForm extends Component {
     let status = this.state.status;
     let dueDate = this.state.dueDate;
 
+    // let's just show one error at a time for now
+    if (!title) {
+      this.props.showError('You must give a Todo a proper title!');
+    } else if (!status) {
+      this.props.showError('You must select a status!');
+    } else if (!dueDate) {
+      this.props.showError('Todos must have a due date!');
+    }
+
     return title && status && dueDate;
   };
 
   handleSubmit = e => {
+    this.props.hideError();
     e.preventDefault();
     if (this.validateInput()) {
       this.props.handleSubmit(this.state);

@@ -1,10 +1,67 @@
 @import url('https://fonts.googleapis.com/css?family=Do+Hyeon');
+@import url('https://fonts.googleapis.com/css?family=Roboto');
 
 body {
   margin: 0;
   padding: 0;
   font-family: 'Do Hyeon', sans-serif;
   box-sizing: border-box;
+}
+
+/* simple transitions */
+
+.fade-enter {
+  opacity: 0.01;
+}
+
+.fade-enter.fade-enter-active {
+  opacity: 1;
+  transition: opacity 200ms ease-in;
+}
+
+.fade-leave {
+  opacity: 1;
+}
+
+.fade-leave.fade-leave-active {
+  opacity: 0.01;
+  transition: opacity 200ms ease-in;
+}
+
+.fade-appear {
+  opacity: 0.01;
+}
+
+.fade-appear.fade-appear-active {
+  opacity: 1;
+  transition: opacity 400ms ease-in;
+}
+
+.fadefast-enter {
+  opacity: 0.01;
+}
+
+.fadefast-enter.fadefast-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+
+.fadefast-leave {
+  opacity: 1;
+}
+
+.fadefast-leave.fadefast-leave-active {
+  opacity: 0.01;
+  transition: opacity 500ms ease-in;
+}
+
+.fadefast-appear {
+  opacity: 0.01;
+}
+
+.fadefast-appear.fadefast-appear-active {
+  opacity: 1;
+  transition: opacity 1s ease-in;
 }
 
 /* react-big-calendar overrides */

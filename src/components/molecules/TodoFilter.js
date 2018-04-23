@@ -25,7 +25,7 @@ const styles = {
 class TodoFilter extends Component {
   constructor() {
     super();
-    this.debouncedSearch = _.debounce(this.debouncedSearch, 250);
+    this.debouncedSearch = _.debounce(this.debouncedSearch, 150);
   }
 
   state = {
