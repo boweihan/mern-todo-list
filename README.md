@@ -17,6 +17,9 @@ The front end is built with React / default state management.
 
 ## Stuff I wish this repo had
 
+* middleware
+* error handling
+* HOCs
 * accessibility / keyboard accessibility
 * unit tests
 * some kind of state management (flux, redux)
